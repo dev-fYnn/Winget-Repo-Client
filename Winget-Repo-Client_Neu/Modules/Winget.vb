@@ -3,9 +3,10 @@ Imports System.Runtime.InteropServices
 Imports System.Windows
 
 Module Winget
-    Public Async Function Install_Package(paketName As String, repoName As String, auth_token As String, Optional button As Button = Nothing) As Task
+    Public Async Function Install_Package(paketName As String, repoName As String, auth_token As String, Optional version As String = "", Optional button As Button = Nothing) As Task
         Dim logPath As String = Path.Combine(Application.StartupPath, "logs.txt")
         Dim dummy As String = ""
+        Dim error_text As String = ""
 
         If button IsNot Nothing Then
             dummy = button.Text
@@ -24,10 +25,14 @@ Module Winget
             Dim psi As New ProcessStartInfo()
             psi.FileName = "cmd.exe"
 
+            Dim version_text As String = $" -v {version} "
+
+            If version.Length = 0 Then version_text = " "
+
             If auth_token.Length > 0 Then
-                psi.Arguments = $"/c winget install {paketName} -s {repoName} --header " & """{'Token': '" & auth_token & "'}"""
+                psi.Arguments = $"/c winget install {paketName}{version_text}-s {repoName} --header " & """{'Token': '" & auth_token & "'}"""
             Else
-                psi.Arguments = $"/c winget install {paketName} -s {repoName}"
+                psi.Arguments = $"/c winget install {paketName}{version_text}-s {repoName}"
             End If
 
             psi.UseShellExecute = False
@@ -45,13 +50,13 @@ Module Winget
 
             If process.ExitCode = 0 Then
                 If button IsNot Nothing Then
-                    button.Text = "✅ Successfull"
+                    error_text = "✔️ Successfull"
                 Else
                     File.AppendAllText(logPath, $"[{DateTime.Now}] ✔️ Successfull installation of {paketName}" & Environment.NewLine)
                 End If
             Else
                 If button IsNot Nothing Then
-                    button.Text = "❌ Error"
+                    error_text = "❌ Error"
                 Else
                     File.AppendAllText(logPath, $"[{DateTime.Now}] ❌ Error installation of {paketName}: ExitCode {process.ExitCode}" & Environment.NewLine)
                 End If
@@ -59,7 +64,7 @@ Module Winget
 
         Catch ex As Exception
             If button IsNot Nothing Then
-                button.Text = "❌ Error"
+                error_text = "❗ Error"
             Else
                 File.AppendAllText(logPath, $"[{DateTime.Now}] ❗ Error installation of {ex.Message}" & Environment.NewLine)
             End If
@@ -68,8 +73,8 @@ Module Winget
                 Form1.Packages.Enabled = True
                 Form1.Refresh.Enabled = True
                 Form1.Settings.Enabled = True
-                Threading.Thread.Sleep(3000)
                 button.Text = dummy
+                MsgBox(error_text)
             End If
         End Try
     End Function

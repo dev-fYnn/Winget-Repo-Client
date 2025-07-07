@@ -3,7 +3,7 @@
 
 Public Class Form1
 
-    Private Async Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If SERVER_URL.ToUpper.StartsWith("HTTPS://") And SERVER_URL.ToUpper.EndsWith("/API") Then
             load_packages_to_view()
         Else
@@ -16,7 +16,7 @@ Public Class Form1
         Form_Settings.Show()
     End Sub
 
-    Private Async Sub Refresh_Click(sender As Object, e As EventArgs) Handles Refresh.Click
+    Private Sub Refresh_Click(sender As Object, e As EventArgs) Handles Refresh.Click
         Packages.Controls.Clear()
         Status.Text = ""
 
@@ -41,10 +41,18 @@ Public Class Form1
 
         For Each p As Paket In pakete
             Dim btn As New Button()
-            btn.Text = p.PACKAGE_NAME & vbCrLf & p.PACKAGE_DESCRIPTION
-            btn.Width = 120
-            btn.Height = 120
-            btn.Tag = p.PACKAGE_ID
+            btn.Text = p.PACKAGE_NAME
+            btn.TextAlign = ContentAlignment.BottomCenter
+            btn.Font = New Font("Microsoft Sans Serif", 7.5)
+
+            btn.Width = 100
+            btn.Height = 100
+            btn.Tag = p
+
+            Dim logo As Image = GetLogoforPackage(p.PACKAGE_LOGO)
+            btn.Image = logo
+            btn.ImageAlign = ContentAlignment.TopCenter
+
             AddHandler btn.Click, AddressOf PaketButton_Click
             Packages.Controls.Add(btn)
         Next
@@ -54,9 +62,19 @@ Public Class Form1
     End Sub
 
     Private Sub PaketButton_Click(sender As Object, e As EventArgs)
+        Status.Text = ""
         Dim btn As Button = DirectCast(sender, Button)
-        Dim paketId As String = btn.Tag.ToString()
+        Dim paketId As String = btn.Tag.PACKAGE_ID
 
-        Install_Package(paketId, REPO_NAME, AUTH_TOKEN, btn)
+        Dim versionDialog As New Select_Version(btn.Tag.VERSIONS)
+
+        If btn.Tag.VERSIONS.Count > 0 Then
+            If versionDialog.ShowDialog() = DialogResult.OK Then
+                Dim selectedVersion As String = versionDialog.SelectedVersion
+                Install_Package(paketId, REPO_NAME, AUTH_TOKEN, selectedVersion, btn)
+            End If
+        Else
+            MsgBox("No Versions available!")
+        End If
     End Sub
 End Class
