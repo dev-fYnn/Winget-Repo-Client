@@ -7,13 +7,9 @@ Public Class Form_Settings
         Settings_Server.Text = SERVER_URL
     End Sub
 
-    Private Sub Form_Settings_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        Form1.Show()
-    End Sub
-
     Private Sub Settings_Save_Click(sender As Object, e As EventArgs) Handles Settings_Save.Click
         If Settings_Server.Text.EndsWith("/") Then
-            Settings_Server.Text = Settings_Server.Text.ToLower.Replace("/api/", "/api")
+            Settings_Server.Text = Settings_Server.Text.ToLower.TrimEnd("/")
         End If
 
         SERVER_URL = Settings_Server.Text
@@ -36,7 +32,7 @@ Public Class Form_Settings
 
         Dim name As String = "Winget-Repo"
         Dim type As String = "Microsoft.Rest"
-        Dim apiUrl As String = $"{SERVER_URL.Replace("/client/api", "")}/api/"
+        Dim apiUrl As String = $"{SERVER_URL}/api/"
         Dim header As String = "{'Token': '" & AUTH_TOKEN & "'}"
         Dim arguments As String = $"source add -n {name} -t ""{type}"" -a {apiUrl} --header ""{header}"""
 

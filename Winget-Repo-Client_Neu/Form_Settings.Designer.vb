@@ -22,6 +22,7 @@ Partial Class Form_Settings
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form_Settings))
         Me.Settings_Server = New System.Windows.Forms.TextBox()
         Me.Settings_Token = New System.Windows.Forms.TextBox()
         Me.Settings_Repo_Name = New System.Windows.Forms.TextBox()
@@ -58,6 +59,7 @@ Partial Class Form_Settings
         Me.Settings_Repo_Name.Name = "Settings_Repo_Name"
         Me.Settings_Repo_Name.Size = New System.Drawing.Size(332, 20)
         Me.Settings_Repo_Name.TabIndex = 2
+        Me.Settings_Repo_Name.Text = "Winget-Repo"
         '
         'Settings_Save
         '
@@ -75,9 +77,9 @@ Partial Class Form_Settings
         Me.Settings_Repo_Name_Label.AutoSize = True
         Me.Settings_Repo_Name_Label.Location = New System.Drawing.Point(12, 90)
         Me.Settings_Repo_Name_Label.Name = "Settings_Repo_Name_Label"
-        Me.Settings_Repo_Name_Label.Size = New System.Drawing.Size(64, 13)
+        Me.Settings_Repo_Name_Label.Size = New System.Drawing.Size(109, 13)
         Me.Settings_Repo_Name_Label.TabIndex = 4
-        Me.Settings_Repo_Name_Label.Text = "Repo-Name"
+        Me.Settings_Repo_Name_Label.Text = "Winget Source Name"
         '
         'Settings_Server_Token
         '
@@ -122,8 +124,10 @@ Partial Class Form_Settings
         Me.Controls.Add(Me.Settings_Token)
         Me.Controls.Add(Me.Settings_Server)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "Form_Settings"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Settings"
         Me.ResumeLayout(False)
         Me.PerformLayout()

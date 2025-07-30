@@ -22,6 +22,7 @@ Partial Class Select_Version
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Select_Version))
         Me.cmbVersions = New System.Windows.Forms.ComboBox()
         Me.Install_btn = New System.Windows.Forms.Button()
         Me.SuspendLayout()
@@ -55,8 +56,10 @@ Partial Class Select_Version
         Me.Controls.Add(Me.Install_btn)
         Me.Controls.Add(Me.cmbVersions)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "Select_Version"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Version"
         Me.ResumeLayout(False)
 

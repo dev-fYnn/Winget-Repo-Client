@@ -9,11 +9,37 @@ Public Class Paket
     Public Property PACKAGE_PUBLISHER As String
     Public Property PACKAGE_DESCRIPTION As String
     Public Property PACKAGE_LOGO As String
-
     Public Property VERSIONS As List(Of String)
 End Class
 
 Public Module Server
+    Public Class VersionCheckResponse
+        Public Property Version As String
+    End Class
+
+    Public Async Function IsClientUpToDate(currentVersion As Version) As Task(Of Boolean)
+        Dim serverUrl As String = $"{SERVER_URL}/client/api/client_version"
+        Dim client As New HttpClient()
+
+        Try
+            Dim requestBody = New StringContent("{}", System.Text.Encoding.UTF8, "application/json")
+            Dim response As HttpResponseMessage = Await client.PostAsync(serverUrl, requestBody)
+
+            If response.IsSuccessStatusCode Then
+                Dim jsonString As String = Await response.Content.ReadAsStringAsync()
+                Dim serverResponse As VersionCheckResponse = JsonConvert.DeserializeObject(Of VersionCheckResponse)(jsonString)
+
+                Dim serverVersion As New Version(serverResponse.Version)
+                Return currentVersion >= serverVersion
+            Else
+                Return True
+            End If
+        Catch ex As Exception
+            Return True
+        End Try
+    End Function
+
+
     Public Async Function GetPackagesFromServer(serverUrl As String, authToken As String, Optional gui As Boolean = False) As Task(Of List(Of Paket))
         Using client As New HttpClient()
             Dim content = New FormUrlEncodedContent(New Dictionary(Of String, String) From {
@@ -21,7 +47,7 @@ Public Module Server
             })
 
             Try
-                Dim response As HttpResponseMessage = Await client.PostAsync($"{serverUrl}/get_packages", content)
+                Dim response As HttpResponseMessage = Await client.PostAsync($"{serverUrl}/client/api/get_packages", content)
                 response.EnsureSuccessStatusCode()
 
                 Dim jsonString As String = Await response.Content.ReadAsStringAsync()
@@ -39,16 +65,16 @@ Public Module Server
 
     Public Function GetLogoforPackage(imageName As String) As Image
         Try
-            Dim request As WebRequest = WebRequest.Create($"{SERVER_URL}/get_logo/{imageName}")
+            Dim request As WebRequest = WebRequest.Create($"{SERVER_URL}/client/api/get_logo/{imageName}")
             Using response As WebResponse = request.GetResponse()
                 Using stream As Stream = response.GetResponseStream()
                     Dim img As Image = Image.FromStream(stream)
 
-                    Dim resizedImage As New Bitmap(70, 70)
+                    Dim resizedImage As New Bitmap(65, 65)
 
                     Using g As Graphics = Graphics.FromImage(resizedImage)
                         g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                        g.DrawImage(img, 0, 0, 70, 70)
+                        g.DrawImage(img, 0, 0, 65, 65)
                     End Using
 
                     Return resizedImage

@@ -4,23 +4,25 @@
 Public Class Form1
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If SERVER_URL.ToUpper.StartsWith("HTTPS://") And SERVER_URL.ToUpper.EndsWith("/API") Then
+        If SERVER_URL.ToUpper.StartsWith("HTTPS://") Then
             load_packages_to_view()
         Else
             Status.Text = "Loading not possible! Change the settings und try again!"
         End If
+
+        Version.Text = My.Application.Info.Version.ToString
     End Sub
 
     Private Sub Settings_Click(sender As Object, e As EventArgs) Handles Settings.Click
-        Me.Hide()
-        Form_Settings.Show()
+        Dim f As New Form_Settings()
+        f.ShowDialog()
     End Sub
 
     Private Sub Refresh_Click(sender As Object, e As EventArgs) Handles Refresh.Click
         Packages.Controls.Clear()
         Status.Text = ""
 
-        If SERVER_URL.ToUpper.StartsWith("HTTPS://") And SERVER_URL.ToUpper.EndsWith("/API") Then
+        If SERVER_URL.ToUpper.StartsWith("HTTPS://") Then
             load_packages_to_view()
         Else
             Status.Text = "Loading not possible! Change the settings und try again!"

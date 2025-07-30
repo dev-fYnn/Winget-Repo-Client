@@ -27,6 +27,7 @@ Partial Class Form1
         Me.Packages = New System.Windows.Forms.FlowLayoutPanel()
         Me.Status = New System.Windows.Forms.Label()
         Me.Refresh = New System.Windows.Forms.Button()
+        Me.Version = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Settings
@@ -71,15 +72,27 @@ Partial Class Form1
         Me.Refresh.TabIndex = 3
         Me.Refresh.UseVisualStyleBackColor = True
         '
+        'Version
+        '
+        Me.Version.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Version.AutoSize = True
+        Me.Version.Location = New System.Drawing.Point(553, 22)
+        Me.Version.Name = "Version"
+        Me.Version.Size = New System.Drawing.Size(0, 13)
+        Me.Version.TabIndex = 4
+        Me.Version.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(686, 390)
+        Me.Controls.Add(Me.Version)
         Me.Controls.Add(Me.Refresh)
         Me.Controls.Add(Me.Status)
         Me.Controls.Add(Me.Packages)
         Me.Controls.Add(Me.Settings)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Form1"
         Me.Text = "Winget-Repo Client"
         Me.ResumeLayout(False)
@@ -91,4 +104,5 @@ Partial Class Form1
     Friend WithEvents Packages As FlowLayoutPanel
     Friend WithEvents Status As Label
     Friend WithEvents Refresh As Button
+    Friend WithEvents Version As Label
 End Class
