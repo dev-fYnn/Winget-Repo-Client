@@ -31,6 +31,8 @@ Partial Class Form_Settings
         Me.Settings_Server_Token = New System.Windows.Forms.Label()
         Me.Settings_Server_Label = New System.Windows.Forms.Label()
         Me.set_repository = New System.Windows.Forms.Button()
+        Me.import_config = New System.Windows.Forms.Button()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.SuspendLayout()
         '
         'Settings_Server
@@ -65,7 +67,7 @@ Partial Class Form_Settings
         '
         Me.Settings_Save.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_Save.Location = New System.Drawing.Point(12, 135)
+        Me.Settings_Save.Location = New System.Drawing.Point(12, 138)
         Me.Settings_Save.Name = "Settings_Save"
         Me.Settings_Save.Size = New System.Drawing.Size(332, 23)
         Me.Settings_Save.TabIndex = 3
@@ -103,18 +105,34 @@ Partial Class Form_Settings
         '
         Me.set_repository.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.set_repository.Location = New System.Drawing.Point(12, 165)
+        Me.set_repository.Location = New System.Drawing.Point(12, 167)
         Me.set_repository.Name = "set_repository"
         Me.set_repository.Size = New System.Drawing.Size(332, 23)
         Me.set_repository.TabIndex = 7
         Me.set_repository.Text = "Set Repository"
         Me.set_repository.UseVisualStyleBackColor = True
         '
+        'import_config
+        '
+        Me.import_config.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.import_config.Location = New System.Drawing.Point(12, 196)
+        Me.import_config.Name = "import_config"
+        Me.import_config.Size = New System.Drawing.Size(332, 23)
+        Me.import_config.TabIndex = 8
+        Me.import_config.Text = "Import config.ini"
+        Me.import_config.UseVisualStyleBackColor = True
+        '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
         'Form_Settings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(356, 200)
+        Me.ClientSize = New System.Drawing.Size(356, 231)
+        Me.Controls.Add(Me.import_config)
         Me.Controls.Add(Me.set_repository)
         Me.Controls.Add(Me.Settings_Server_Label)
         Me.Controls.Add(Me.Settings_Server_Token)
@@ -142,4 +160,6 @@ Partial Class Form_Settings
     Friend WithEvents Settings_Server_Token As Label
     Friend WithEvents Settings_Server_Label As Label
     Friend WithEvents set_repository As Button
+    Friend WithEvents import_config As Button
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
 End Class

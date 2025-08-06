@@ -1,5 +1,4 @@
-﻿Imports System.IO
-
+﻿
 Public Class Form_Settings
     Private Sub Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Settings_Token.Text = AUTH_TOKEN
@@ -8,21 +7,7 @@ Public Class Form_Settings
     End Sub
 
     Private Sub Settings_Save_Click(sender As Object, e As EventArgs) Handles Settings_Save.Click
-        If Settings_Server.Text.EndsWith("/") Then
-            Settings_Server.Text = Settings_Server.Text.ToLower.TrimEnd("/")
-        End If
-
-        SERVER_URL = Settings_Server.Text
-        AUTH_TOKEN = Settings_Token.Text
-        REPO_NAME = Settings_Repo_Name.Text
-
-        Dim iniInhalt As String =
-            "[Settings]" & Environment.NewLine &
-            $"URL={Settings_Server.Text}" & Environment.NewLine &
-            $"Token={Settings_Token.Text}" & Environment.NewLine &
-            $"Repo={Settings_Repo_Name.Text}"
-
-        File.WriteAllText(INI_PATH, iniInhalt)
+        IniSave(Settings_Server.Text, Settings_Token.Text, Settings_Repo_Name.Text)
         Me.Close()
     End Sub
 
@@ -64,5 +49,20 @@ Public Class Form_Settings
 
         Cursor.Current = Cursors.Default
         UseWaitCursor = False
+    End Sub
+
+    Private Sub import_config_Click(sender As Object, e As EventArgs) Handles import_config.Click
+        Dim ofd As New OpenFileDialog()
+        ofd.Filter = "INI-File (*.ini)|*.ini"
+        ofd.Title = "Select Winget-Repo Client config"
+
+        If ofd.ShowDialog() = DialogResult.OK Then
+            Dim iniPfad As String = ofd.FileName
+            Dim s_u As String = IniLesen("Settings", "URL", "", iniPfad)
+            Dim a_t As String = IniLesen("Settings", "Token", "", iniPfad)
+            Dim r_n As String = IniLesen("Settings", "Repo", "Winget-Repo", iniPfad)
+            IniSave(s_u, a_t, r_n)
+            Me.Close()
+        End If
     End Sub
 End Class

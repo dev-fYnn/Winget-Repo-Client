@@ -18,16 +18,6 @@ Module Start
     End Sub
 
     Private Async Function RunMainAsync() As Task
-        Dim checkUpdate As Boolean = Await IsClientUpToDate(My.Application.Info.Version)
-        If Not checkUpdate Then
-            Dim client As New WebClient()
-            Dim tempPath As String = Path.Combine(Path.GetTempPath(), "Winget-Repo_Client.exe")
-            client.DownloadFile($"{SERVER_URL}/api/download/Winget-Repo_Client.exe", tempPath)
-
-            Process.Start("Updater.exe", """" & Application.ExecutablePath & """ """ & tempPath & """")
-            Environment.Exit(0)
-        End If
-
         Dim args As String() = Environment.GetCommandLineArgs()
 
         If args.Length > 1 AndAlso args(1).ToLower() = "silent" Then
@@ -36,6 +26,15 @@ Module Start
             For Each p As Paket In packages
                 Await Install_Package(p.PACKAGE_ID, REPO_NAME, AUTH_TOKEN)
             Next
+
+            Dim checkUpdate As Boolean = Await IsClientUpToDate(My.Application.Info.Version)
+            If Not checkUpdate Then
+                Dim client As New WebClient()
+                Dim tempPath As String = Path.Combine(Path.GetTempPath(), "Winget-Repo_Client.exe")
+                client.DownloadFile($"{SERVER_URL}/api/download/Winget-Repo_Client.exe", tempPath)
+
+                Process.Start("Updater.exe", """" & Application.ExecutablePath & """ """ & tempPath & """")
+            End If
 
             Environment.Exit(0)
         Else
