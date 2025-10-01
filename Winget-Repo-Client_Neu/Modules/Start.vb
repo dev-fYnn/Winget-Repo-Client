@@ -7,12 +7,17 @@ Module Start
     Public SERVER_URL As String = ""
     Public AUTH_TOKEN As String = ""
     Public REPO_NAME As String = ""
+    Public CLOUD As Boolean = False
     Public INI_PATH As String = IO.Path.Combine(Application.StartupPath, "config.ini")
 
     Public Sub Main()
         SERVER_URL = IniLesen("Settings", "URL", "", INI_PATH)
         AUTH_TOKEN = IniLesen("Settings", "Token", "", INI_PATH)
         REPO_NAME = IniLesen("Settings", "Repo", "Winget-Repo", INI_PATH)
+
+        If SERVER_URL.ToLower.Contains("https://cloud.winget-repo.io/") Then
+            CLOUD = True
+        End If
 
         RunMainAsync().GetAwaiter().GetResult()
     End Sub

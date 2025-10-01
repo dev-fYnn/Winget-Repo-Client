@@ -18,12 +18,16 @@ Public Module Server
     End Class
 
     Public Async Function IsClientUpToDate(currentVersion As Version) As Task(Of Boolean)
-        Dim serverUrl As String = $"{SERVER_URL}/client/api/client_version"
+        Dim s_url As String = $"{SERVER_URL}/client/api/client_version"
+        If CLOUD Then
+            s_url = $"{SERVER_URL}/client/api/{REPO_NAME}/client_version"
+        End If
+
         Dim client As New HttpClient()
 
         Try
             Dim requestBody = New StringContent("{}", System.Text.Encoding.UTF8, "application/json")
-            Dim response As HttpResponseMessage = Await client.PostAsync(serverUrl, requestBody)
+            Dim response As HttpResponseMessage = Await client.PostAsync(s_url, requestBody)
 
             If response.IsSuccessStatusCode Then
                 Dim jsonString As String = Await response.Content.ReadAsStringAsync()
@@ -46,8 +50,13 @@ Public Module Server
                 {"Auth-Token", authToken}, {"Client", 1}
             })
 
+            Dim s_url As String = $"{serverUrl}/client/api/get_packages"
+            If CLOUD Then
+                s_url = $"{serverUrl}/client/api/{REPO_NAME}/get_packages"
+            End If
+
             Try
-                Dim response As HttpResponseMessage = Await client.PostAsync($"{serverUrl}/client/api/get_packages", content)
+                Dim response As HttpResponseMessage = Await client.PostAsync(s_url, content)
                 response.EnsureSuccessStatusCode()
 
                 Dim jsonString As String = Await response.Content.ReadAsStringAsync()
@@ -65,7 +74,12 @@ Public Module Server
 
     Public Function GetLogoforPackage(imageName As String) As Image
         Try
-            Dim request As WebRequest = WebRequest.Create($"{SERVER_URL}/client/api/get_logo/{imageName}")
+            Dim s_url As String = $"{SERVER_URL}/client/api/get_logo/{imageName}"
+            If CLOUD Then
+                s_url = $"{SERVER_URL}/client/api/{REPO_NAME}/get_logo/{imageName}"
+            End If
+
+            Dim request As WebRequest = WebRequest.Create(s_url)
             Using response As WebResponse = request.GetResponse()
                 Using stream As Stream = response.GetResponseStream()
                     Dim img As Image = Image.FromStream(stream)

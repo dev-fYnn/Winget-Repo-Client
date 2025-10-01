@@ -15,9 +15,14 @@ Public Class Form_Settings
         Cursor.Current = Cursors.WaitCursor
         UseWaitCursor = True
 
-        Dim name As String = "Winget-Repo"
+        Dim name As String = REPO_NAME
         Dim type As String = "Microsoft.Rest"
+
         Dim apiUrl As String = $"{SERVER_URL}/api/"
+        If CLOUD Then
+            apiUrl = $"{SERVER_URL}/api/{REPO_NAME}/"
+        End If
+
         Dim header As String = "{'Token': '" & AUTH_TOKEN & "'}"
         Dim arguments As String = $"source add -n {name} -t ""{type}"" -a {apiUrl} --header ""{header}"""
 
