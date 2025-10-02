@@ -13,7 +13,7 @@ Module Start
     Public Sub Main()
         SERVER_URL = IniLesen("Settings", "URL", "", INI_PATH)
         AUTH_TOKEN = IniLesen("Settings", "Token", "", INI_PATH)
-        REPO_NAME = IniLesen("Settings", "Repo", "Winget-Repo", INI_PATH)
+        REPO_NAME = IniLesen("Settings", "Repo", "", INI_PATH)
 
         If SERVER_URL.ToLower.Contains("https://cloud.winget-repo.io/") Then
             CLOUD = True
@@ -29,17 +29,8 @@ Module Start
             Dim packages = Await GetPackagesFromServer(SERVER_URL, AUTH_TOKEN)
 
             For Each p As Paket In packages
-                Await Install_Package(p.PACKAGE_ID, REPO_NAME, AUTH_TOKEN)
+                Await Winget.RunWingetCommandAsync("Update", p.PACKAGE_ID)
             Next
-
-            Dim checkUpdate As Boolean = Await IsClientUpToDate(My.Application.Info.Version)
-            If Not checkUpdate Then
-                Dim client As New WebClient()
-                Dim tempPath As String = Path.Combine(Path.GetTempPath(), "Winget-Repo_Client.exe")
-                client.DownloadFile($"{SERVER_URL}/api/download/Winget-Repo_Client.exe", tempPath)
-
-                Process.Start("Updater.exe", """" & Application.ExecutablePath & """ """ & tempPath & """")
-            End If
 
             Environment.Exit(0)
         Else

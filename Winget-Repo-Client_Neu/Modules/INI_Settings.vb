@@ -29,6 +29,10 @@ Module INI_Settings
         AUTH_TOKEN = token
         REPO_NAME = repo
 
+        If SERVER_URL.ToLower.Contains("https://cloud.winget-repo.io/") Then
+            CLOUD = True
+        End If
+
         Dim iniInhalt As String =
             "[Settings]" & Environment.NewLine &
             $"URL={server}" & Environment.NewLine &

@@ -105,6 +105,7 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Modules\Functions.vb" />
     <Compile Include="Modules\Server.vb" />
     <Compile Include="Modules\INI_Settings.vb" />
     <Compile Include="Modules\Start.vb" />

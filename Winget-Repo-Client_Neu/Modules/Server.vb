@@ -13,35 +13,35 @@ Public Class Paket
 End Class
 
 Public Module Server
-    Public Class VersionCheckResponse
-        Public Property Version As String
-    End Class
+    'Public Class VersionCheckResponse
+    '    Public Property Version As String
+    'End Class
 
-    Public Async Function IsClientUpToDate(currentVersion As Version) As Task(Of Boolean)
-        Dim s_url As String = $"{SERVER_URL}/client/api/client_version"
-        If CLOUD Then
-            s_url = $"{SERVER_URL}/client/api/{REPO_NAME}/client_version"
-        End If
+    'Public Async Function IsClientUpToDate(currentVersion As Version) As Task(Of Boolean)
+    '    Dim s_url As String = $"{SERVER_URL}/client/api/client_version"
+    '    If CLOUD Then
+    '        s_url = $"{SERVER_URL}/client/api/{REPO_NAME}/client_version"
+    '    End If
 
-        Dim client As New HttpClient()
+    '    Dim client As New HttpClient()
 
-        Try
-            Dim requestBody = New StringContent("{}", System.Text.Encoding.UTF8, "application/json")
-            Dim response As HttpResponseMessage = Await client.PostAsync(s_url, requestBody)
+    '    Try
+    '        Dim requestBody = New StringContent("{}", System.Text.Encoding.UTF8, "application/json")
+    '        Dim response As HttpResponseMessage = Await client.PostAsync(s_url, requestBody)
 
-            If response.IsSuccessStatusCode Then
-                Dim jsonString As String = Await response.Content.ReadAsStringAsync()
-                Dim serverResponse As VersionCheckResponse = JsonConvert.DeserializeObject(Of VersionCheckResponse)(jsonString)
+    '        If response.IsSuccessStatusCode Then
+    '            Dim jsonString As String = Await response.Content.ReadAsStringAsync()
+    '            Dim serverResponse As VersionCheckResponse = JsonConvert.DeserializeObject(Of VersionCheckResponse)(jsonString)
 
-                Dim serverVersion As New Version(serverResponse.Version)
-                Return currentVersion >= serverVersion
-            Else
-                Return True
-            End If
-        Catch ex As Exception
-            Return True
-        End Try
-    End Function
+    '            Dim serverVersion As New Version(serverResponse.Version)
+    '            Return currentVersion >= serverVersion
+    '        Else
+    '            Return True
+    '        End If
+    '    Catch ex As Exception
+    '        Return True
+    '    End Try
+    'End Function
 
 
     Public Async Function GetPackagesFromServer(serverUrl As String, authToken As String, Optional gui As Boolean = False) As Task(Of List(Of Paket))

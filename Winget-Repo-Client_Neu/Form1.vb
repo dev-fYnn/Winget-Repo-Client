@@ -1,19 +1,24 @@
 ﻿Imports Winget_Repo_Client_Neu.Server
+Imports Winget_Repo_Client.Functions
 
 
 Public Class Form1
-
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If SERVER_URL.ToUpper.StartsWith("HTTPS://") Then
             load_packages_to_view()
         Else
-            Status.Text = "Loading not possible! Change the settings und try again!"
+            Status.Text = "Loading not possible! Change the settings and try again!"
         End If
 
         Version.Text = My.Application.Info.Version.ToString
     End Sub
 
     Private Sub Settings_Click(sender As Object, e As EventArgs) Handles Settings.Click
+        If Not IsRunningAsAdministrator() Then
+            MsgBox("Open Winget-Repo Client with admin privileges to edit the settings.")
+            Exit Sub
+        End If
+
         Dim f As New Form_Settings()
         f.ShowDialog()
     End Sub
@@ -25,7 +30,7 @@ Public Class Form1
         If SERVER_URL.ToUpper.StartsWith("HTTPS://") Then
             load_packages_to_view()
         Else
-            Status.Text = "Loading not possible! Change the settings und try again!"
+            Status.Text = "Loading not possible! Change the settings and try again!"
         End If
     End Sub
 
@@ -63,20 +68,27 @@ Public Class Form1
         Cursor.Current = Cursors.Default
     End Sub
 
-    Private Sub PaketButton_Click(sender As Object, e As EventArgs)
-        Status.Text = ""
+    Private Async Sub PaketButton_Click(sender As Object, e As EventArgs)
         Dim btn As Button = DirectCast(sender, Button)
         Dim paketId As String = btn.Tag.PACKAGE_ID
+        btn.Text = "Processing..."
 
         Dim versionDialog As New Select_Version(btn.Tag.VERSIONS)
 
         If btn.Tag.VERSIONS.Count > 0 Then
             If versionDialog.ShowDialog() = DialogResult.OK Then
                 Dim selectedVersion As String = versionDialog.SelectedVersion
-                Install_Package(paketId, REPO_NAME, AUTH_TOKEN, selectedVersion, btn)
+                Dim result = Await Winget.RunWingetCommandAsync(versionDialog.install_update, paketId, selectedVersion)
+
+                If result.ExitCode = 0 Then
+                    MsgBox($"Installation Status: {result.ExitCode},{vbNewLine}{vbNewLine}Successfull!")
+                Else
+                    MsgBox($"Installation Status: {result.ExitCode},{vbNewLine}{vbNewLine}{result.Output}")
+                End If
             End If
         Else
             MsgBox("No Versions available!")
         End If
+        btn.Text = btn.Tag.PACKAGE_NAME
     End Sub
 End Class
