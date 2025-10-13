@@ -28,6 +28,7 @@ Partial Class Form1
         Me.Status = New System.Windows.Forms.Label()
         Me.Refresh = New System.Windows.Forms.Button()
         Me.Version = New System.Windows.Forms.Label()
+        Me.new_update = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Settings
@@ -82,11 +83,25 @@ Partial Class Form1
         Me.Version.TabIndex = 4
         Me.Version.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'new_update
+        '
+        Me.new_update.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.new_update.BackColor = System.Drawing.Color.LightGreen
+        Me.new_update.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.new_update.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.new_update.Location = New System.Drawing.Point(513, 10)
+        Me.new_update.Name = "new_update"
+        Me.new_update.Size = New System.Drawing.Size(36, 36)
+        Me.new_update.TabIndex = 5
+        Me.new_update.UseVisualStyleBackColor = False
+        Me.new_update.Visible = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(686, 390)
+        Me.Controls.Add(Me.new_update)
         Me.Controls.Add(Me.Version)
         Me.Controls.Add(Me.Refresh)
         Me.Controls.Add(Me.Status)
@@ -105,4 +120,5 @@ Partial Class Form1
     Friend WithEvents Status As Label
     Friend WithEvents Refresh As Button
     Friend WithEvents Version As Label
+    Friend WithEvents new_update As Button
 End Class

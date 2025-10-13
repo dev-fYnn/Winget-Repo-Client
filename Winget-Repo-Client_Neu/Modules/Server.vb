@@ -8,40 +8,43 @@ Public Class Paket
     Public Property PACKAGE_NAME As String
     Public Property PACKAGE_PUBLISHER As String
     Public Property PACKAGE_DESCRIPTION As String
-    Public Property PACKAGE_LOGO As String
+    Public Property PACKAGE_LOGO
     Public Property VERSIONS As List(Of String)
 End Class
 
 Public Module Server
-    'Public Class VersionCheckResponse
-    '    Public Property Version As String
-    'End Class
+    Public Class VersionCheckResponse
+        Public Property Version As String
+    End Class
 
-    'Public Async Function IsClientUpToDate(currentVersion As Version) As Task(Of Boolean)
-    '    Dim s_url As String = $"{SERVER_URL}/client/api/client_version"
-    '    If CLOUD Then
-    '        s_url = $"{SERVER_URL}/client/api/{REPO_NAME}/client_version"
-    '    End If
+    Public Async Function IsClientUpToDate(currentVersion As Version, authToken As String) As Task(Of Boolean)
+        Dim content = New FormUrlEncodedContent(New Dictionary(Of String, String) From {
+            {"Auth-Token", authToken}, {"Client", 1}
+        })
 
-    '    Dim client As New HttpClient()
+        Dim s_url As String = $"{SERVER_URL}/client/api/client_version"
+        If CLOUD Then
+            s_url = $"{SERVER_URL}/client/api/{REPO_NAME}/client_version"
+        End If
 
-    '    Try
-    '        Dim requestBody = New StringContent("{}", System.Text.Encoding.UTF8, "application/json")
-    '        Dim response As HttpResponseMessage = Await client.PostAsync(s_url, requestBody)
+        Dim client As New HttpClient()
 
-    '        If response.IsSuccessStatusCode Then
-    '            Dim jsonString As String = Await response.Content.ReadAsStringAsync()
-    '            Dim serverResponse As VersionCheckResponse = JsonConvert.DeserializeObject(Of VersionCheckResponse)(jsonString)
+        Try
+            Dim response As HttpResponseMessage = Await client.PostAsync(s_url, content)
 
-    '            Dim serverVersion As New Version(serverResponse.Version)
-    '            Return currentVersion >= serverVersion
-    '        Else
-    '            Return True
-    '        End If
-    '    Catch ex As Exception
-    '        Return True
-    '    End Try
-    'End Function
+            If response.IsSuccessStatusCode Then
+                Dim jsonString As String = Await response.Content.ReadAsStringAsync()
+                Dim serverResponse As VersionCheckResponse = JsonConvert.DeserializeObject(Of VersionCheckResponse)(jsonString)
+
+                Dim serverVersion As New Version(serverResponse.Version)
+                Return currentVersion >= serverVersion
+            Else
+                Return True
+            End If
+        Catch ex As Exception
+            Return True
+        End Try
+    End Function
 
 
     Public Async Function GetPackagesFromServer(serverUrl As String, authToken As String, Optional gui As Boolean = False) As Task(Of List(Of Paket))
@@ -62,6 +65,32 @@ Public Module Server
                 Dim jsonString As String = Await response.Content.ReadAsStringAsync()
                 Dim pakete = JsonConvert.DeserializeObject(Of List(Of Paket))(jsonString)
 
+                For Each p As Paket In pakete
+                    Try
+                        Dim base64Data As String = p.PACKAGE_LOGO
+                        If base64Data.StartsWith("data:image") Then
+                            Dim commaIndex As Integer = base64Data.IndexOf(","c)
+                            If commaIndex >= 0 Then
+                                base64Data = base64Data.Substring(commaIndex + 1)
+                            End If
+                        End If
+
+                        Dim imageBytes As Byte() = Convert.FromBase64String(base64Data)
+                        Using ms As New MemoryStream(imageBytes)
+                            Dim originalImage As Image = Image.FromStream(ms)
+                            Dim resizedImage As New Bitmap(65, 65)
+                            Using g As Graphics = Graphics.FromImage(resizedImage)
+                                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                                g.DrawImage(originalImage, 0, 0, 65, 65)
+                            End Using
+
+                            p.PACKAGE_LOGO = resizedImage
+                        End Using
+                    Catch ex As Exception
+                        p.PACKAGE_LOGO = Nothing
+                    End Try
+                Next
+
                 Return If(pakete, New List(Of Paket)())
             Catch ex As Exception
                 If gui Then
@@ -70,31 +99,5 @@ Public Module Server
                 Return New List(Of Paket)()
             End Try
         End Using
-    End Function
-
-    Public Function GetLogoforPackage(imageName As String) As Image
-        Try
-            Dim s_url As String = $"{SERVER_URL}/client/api/get_logo/{imageName}"
-            If CLOUD Then
-                s_url = $"{SERVER_URL}/client/api/{REPO_NAME}/get_logo/{imageName}"
-            End If
-
-            Dim request As WebRequest = WebRequest.Create(s_url)
-            Using response As WebResponse = request.GetResponse()
-                Using stream As Stream = response.GetResponseStream()
-                    Dim img As Image = Image.FromStream(stream)
-
-                    Dim resizedImage As New Bitmap(65, 65)
-
-                    Using g As Graphics = Graphics.FromImage(resizedImage)
-                        g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                        g.DrawImage(img, 0, 0, 65, 65)
-                    End Using
-
-                    Return resizedImage
-                End Using
-            End Using
-        Catch ex As Exception
-        End Try
     End Function
 End Module

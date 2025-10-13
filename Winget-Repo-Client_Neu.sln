@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Winget-Repo-Client_Neu", "Winget-Repo-Client_Neu\Winget-Repo-Client_Neu.vbproj", "{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Client_Installer", "Client_Installer\Client_Installer.vdproj", "{324E454F-E0B6-46E0-A813-E3C1F1E9734E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Release|Any CPU.Build.0 = Release|Any CPU
+		{324E454F-E0B6-46E0-A813-E3C1F1E9734E}.Debug|Any CPU.ActiveCfg = Debug
+		{324E454F-E0B6-46E0-A813-E3C1F1E9734E}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
