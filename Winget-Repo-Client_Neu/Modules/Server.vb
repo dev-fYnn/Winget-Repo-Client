@@ -19,7 +19,7 @@ Public Module Server
 
     Public Async Function IsClientUpToDate(currentVersion As Version, authToken As String) As Task(Of Boolean)
         Dim content = New FormUrlEncodedContent(New Dictionary(Of String, String) From {
-            {"Auth-Token", authToken}, {"Client", 1}
+            {"auth_token", authToken}, {"client", 1}
         })
 
         Dim s_url As String = $"{SERVER_URL}/client/api/client_version"
@@ -50,7 +50,7 @@ Public Module Server
     Public Async Function GetPackagesFromServer(serverUrl As String, authToken As String, Optional gui As Boolean = False) As Task(Of List(Of Paket))
         Using client As New HttpClient()
             Dim content = New FormUrlEncodedContent(New Dictionary(Of String, String) From {
-                {"Auth-Token", authToken}, {"Client", 1}
+                {"auth_token", authToken}, {"client", 1}
             })
 
             Dim s_url As String = $"{serverUrl}/client/api/get_packages"
