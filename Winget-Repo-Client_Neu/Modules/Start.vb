@@ -29,10 +29,14 @@ Module Start
             Dim packages = Await GetPackagesFromServer(SERVER_URL, AUTH_TOKEN)
 
             For Each p As Paket In packages
+                If p.PACKAGE_ID = "WingetRepoClient.WingetRepoClient" Then Continue For
+
                 Await Winget.RunWingetCommandAsync("Update", p.PACKAGE_ID)
             Next
 
             Environment.Exit(0)
+        ElseIf args.Length > 1 AndAlso args(1).ToLower() = "update" Then
+            Await Winget.RunWingetCommandAsync("Update", "WingetRepoClient.WingetRepoClient")
         Else
             Application.EnableVisualStyles()
             Application.SetCompatibleTextRenderingDefault(False)

@@ -1,5 +1,4 @@
-﻿Imports Winget_Repo_Client_Neu.Server
-Imports Winget_Repo_Client.Functions
+﻿Imports Winget_Repo_Client.Functions
 
 
 Public Class Form1
@@ -38,16 +37,8 @@ Public Class Form1
         Status.Text = ""
         Cursor.Current = Cursors.WaitCursor
         UseWaitCursor = True
-        Dim new_update_task = Await IsClientUpToDate(My.Application.Info.Version, AUTH_TOKEN)
-
-        If new_update_task Then
-            new_update.Visible = False
-        Else
-            new_update.Visible = True
-        End If
 
         Dim pakete = Await GetPackagesFromServer(SERVER_URL, AUTH_TOKEN, True)
-
         Packages.Controls.Clear()
 
         If pakete.Count = 0 And Status.Text.Length = 0 Then
@@ -96,10 +87,5 @@ Public Class Form1
             MsgBox("No Versions available!")
         End If
         btn.Text = btn.Tag.PACKAGE_NAME
-    End Sub
-
-    Private Sub new_update_Click(sender As Object, e As EventArgs) Handles new_update.Click
-        Dim webAddress As String = "https://github.com/dev-fYnn/Winget-Repo-Client/releases"
-        Process.Start(webAddress)
     End Sub
 End Class

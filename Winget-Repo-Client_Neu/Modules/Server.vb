@@ -17,35 +17,6 @@ Public Module Server
         Public Property Version As String
     End Class
 
-    Public Async Function IsClientUpToDate(currentVersion As Version, authToken As String) As Task(Of Boolean)
-        Dim content = New FormUrlEncodedContent(New Dictionary(Of String, String) From {
-            {"auth_token", authToken}, {"client", 1}
-        })
-
-        Dim s_url As String = $"{SERVER_URL}/client/api/client_version"
-        If CLOUD Then
-            s_url = $"{SERVER_URL}/client/api/{REPO_NAME}/client_version"
-        End If
-
-        Dim client As New HttpClient()
-
-        Try
-            Dim response As HttpResponseMessage = Await client.PostAsync(s_url, content)
-
-            If response.IsSuccessStatusCode Then
-                Dim jsonString As String = Await response.Content.ReadAsStringAsync()
-                Dim serverResponse As VersionCheckResponse = JsonConvert.DeserializeObject(Of VersionCheckResponse)(jsonString)
-
-                Dim serverVersion As New Version(serverResponse.Version)
-                Return currentVersion >= serverVersion
-            Else
-                Return True
-            End If
-        Catch ex As Exception
-            Return True
-        End Try
-    End Function
-
 
     Public Async Function GetPackagesFromServer(serverUrl As String, authToken As String, Optional gui As Boolean = False) As Task(Of List(Of Paket))
         Using client As New HttpClient()
@@ -55,7 +26,7 @@ Public Module Server
 
             Dim s_url As String = $"{serverUrl}/client/api/get_packages"
             If CLOUD Then
-                s_url = $"{serverUrl}/client/api/{REPO_NAME}/get_packages"
+                s_url = $"{serverUrl}/get_packages"
             End If
 
             Try

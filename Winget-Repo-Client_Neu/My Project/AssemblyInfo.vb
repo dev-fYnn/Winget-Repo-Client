@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("Winget-Repo")>
 <Assembly: AssemblyProduct("Winget-Repo_Client")>
-<Assembly: AssemblyCopyright("Copyright ©  2025")>
+<Assembly: AssemblyCopyright("Copyright ©  2026")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' indem Sie "*" wie unten gezeigt eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("2.6.0.0")>
-<Assembly: AssemblyFileVersion("2.6.0.0")>
+<Assembly: AssemblyVersion("2.9.0.0")>
+<Assembly: AssemblyFileVersion("2.9.0.0")>

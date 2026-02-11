@@ -5,20 +5,30 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Winget-Repo-Client_Neu", "Winget-Repo-Client_Neu\Winget-Repo-Client_Neu.vbproj", "{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Client_Installer", "Client_Installer\Client_Installer.vdproj", "{324E454F-E0B6-46E0-A813-E3C1F1E9734E}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Wix_Installer", "Wix_Installer\Wix_Installer.wixproj", "{A06BF765-5986-446D-846D-6310CF79B30D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Debug|x86.Build.0 = Debug|Any CPU
 		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Release|Any CPU.Build.0 = Release|Any CPU
-		{324E454F-E0B6-46E0-A813-E3C1F1E9734E}.Debug|Any CPU.ActiveCfg = Debug
-		{324E454F-E0B6-46E0-A813-E3C1F1E9734E}.Release|Any CPU.ActiveCfg = Release
+		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Release|x86.ActiveCfg = Release|Any CPU
+		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Release|x86.Build.0 = Release|Any CPU
+		{A06BF765-5986-446D-846D-6310CF79B30D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A06BF765-5986-446D-846D-6310CF79B30D}.Debug|x86.ActiveCfg = Debug|x86
+		{A06BF765-5986-446D-846D-6310CF79B30D}.Debug|x86.Build.0 = Debug|x86
+		{A06BF765-5986-446D-846D-6310CF79B30D}.Release|Any CPU.ActiveCfg = Release|x86
+		{A06BF765-5986-446D-846D-6310CF79B30D}.Release|x86.ActiveCfg = Release|x86
+		{A06BF765-5986-446D-846D-6310CF79B30D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
