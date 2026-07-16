@@ -18,8 +18,6 @@ With the client, you can easily connect your Windows devices to **Winget-Repo** 
 
 - 📦 **Centralized Package Management:** View all applications provided by your repository in one place – no need to search manually.
 
-- 🔄 **Update Management:** See which applications are outdated and update them with a single click.
-
 - ⚡ **Seamless Integration with Winget-Repo:** Works out-of-the-box with both self-hosted Winget-Repo and Winget-Repo Cloud.
 
 - 🔐 **Secure Access:** Supports token-based authentication for connecting clients to your repository.
@@ -36,7 +34,7 @@ With the client, you can easily connect your Windows devices to **Winget-Repo** 
 - Access to a **Winget-Repo** server or **Winget-Repo Cloud** account  
 
 ### Install Client
-Download the latest version from the [Releases page](https://github.com/dev-fYnn/Winget-Repo-Client/releases).  
+Download and install the latest version from the [Releases page](https://github.com/dev-fYnn/Winget-Repo-Client/releases).  
 
 ---
 
@@ -44,8 +42,8 @@ Download the latest version from the [Releases page](https://github.com/dev-fYnn
 
 1. **Connect winget to your repository**  
    Connect your client either to **Winget-Repo Cloud** or a **self-hosted Winget-Repo** instance:  
-   - [Cloud Setup Guide](https://cloud.winget-repo.io/docs/Client-Connect)  
-   - [Self-Hosted Setup Guide](https://github.com/dev-fYnn/Winget-Repo/blob/master/Docs/Connection.md)  
+   - [Cloud Setup Guide](https://docs.winget-repo.io/cloud/Client-Connect)  
+   - [Self-Hosted Setup Guide](https://docs.winget-repo.io/local/Client-Connect)  
 
 2. **Download Client Configuration**  
    In the **Winget-Repo Dashboard**, navigate to the *Clients* section and download the dedicated `config.ini` file for your device.  
