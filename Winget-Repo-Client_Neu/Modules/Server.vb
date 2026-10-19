@@ -9,16 +9,21 @@ Public Class Paket
     Public Property PACKAGE_PUBLISHER As String
     Public Property PACKAGE_DESCRIPTION As String
     Public Property PACKAGE_LOGO
+    Public Property PACKAGE_LOGO_URL As String
     Public Property VERSIONS As List(Of String)
 End Class
 
 Public Module Server
+    Private ReadOnly logoHttpClient As New HttpClient()
+
     Public Class VersionCheckResponse
         Public Property Version As String
     End Class
 
 
     Public Async Function GetPackagesFromServer(serverUrl As String, authToken As String, Optional gui As Boolean = False) As Task(Of List(Of Paket))
+        ServicePointManager.DefaultConnectionLimit = Math.Max(ServicePointManager.DefaultConnectionLimit, 20)
+
         Using client As New HttpClient()
             Dim content = New FormUrlEncodedContent(New Dictionary(Of String, String) From {
                 {"auth_token", authToken}, {"client", 1}
@@ -37,29 +42,8 @@ Public Module Server
                 Dim pakete = JsonConvert.DeserializeObject(Of List(Of Paket))(jsonString)
 
                 For Each p As Paket In pakete
-                    Try
-                        Dim base64Data As String = p.PACKAGE_LOGO
-                        If base64Data.StartsWith("data:image") Then
-                            Dim commaIndex As Integer = base64Data.IndexOf(","c)
-                            If commaIndex >= 0 Then
-                                base64Data = base64Data.Substring(commaIndex + 1)
-                            End If
-                        End If
-
-                        Dim imageBytes As Byte() = Convert.FromBase64String(base64Data)
-                        Using ms As New MemoryStream(imageBytes)
-                            Dim originalImage As Image = Image.FromStream(ms)
-                            Dim resizedImage As New Bitmap(65, 65)
-                            Using g As Graphics = Graphics.FromImage(resizedImage)
-                                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                                g.DrawImage(originalImage, 0, 0, 65, 65)
-                            End Using
-
-                            p.PACKAGE_LOGO = resizedImage
-                        End Using
-                    Catch ex As Exception
-                        p.PACKAGE_LOGO = Nothing
-                    End Try
+                    p.PACKAGE_LOGO_URL = Convert.ToString(p.PACKAGE_LOGO)
+                    p.PACKAGE_LOGO = GetDummyPackageLogo()
                 Next
 
                 Return If(pakete, New List(Of Paket)())
@@ -70,5 +54,36 @@ Public Module Server
                 Return New List(Of Paket)()
             End Try
         End Using
+    End Function
+
+    Public Async Function GetPackageLogoAsync(logoUrl As String, serverUrl As String) As Task(Of Image)
+        If String.IsNullOrWhiteSpace(logoUrl) Then Return GetDummyPackageLogo()
+
+        Try
+            Dim resolvedLogoUrl As Uri = Nothing
+            If Not Uri.TryCreate(logoUrl, UriKind.Absolute, resolvedLogoUrl) Then
+                Dim serverUri As New Uri(If(serverUrl.EndsWith("/"), serverUrl, serverUrl & "/"))
+                resolvedLogoUrl = New Uri(serverUri, logoUrl)
+            End If
+
+            Dim imageBytes As Byte() = Await logoHttpClient.GetByteArrayAsync(resolvedLogoUrl)
+            Using ms As New MemoryStream(imageBytes)
+                Using originalImage As Image = Image.FromStream(ms)
+                    Dim resizedImage As New Bitmap(65, 65)
+                    Using g As Graphics = Graphics.FromImage(resizedImage)
+                        g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                        g.DrawImage(originalImage, 0, 0, 65, 65)
+                    End Using
+
+                    Return resizedImage
+                End Using
+            End Using
+        Catch ex As Exception
+            Return GetDummyPackageLogo()
+        End Try
+    End Function
+
+    Private Function GetDummyPackageLogo() As Image
+        Return New Bitmap(My.Resources.dummy, 65, 65)
     End Function
 End Module

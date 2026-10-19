@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Winget-Repo-Client_Neu", "Winget-Repo-Client_Neu\Winget-Repo-Client_Neu.vbproj", "{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Wix_Installer", "Wix_Installer\Wix_Installer.wixproj", "{A06BF765-5986-446D-846D-6310CF79B30D}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Wix_Installer", "Wix_Installer\Wix_Installer.wixproj", "{F51DB293-B501-42A9-AD8B-1E504995AFCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +23,12 @@ Global
 		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Release|Any CPU.Build.0 = Release|Any CPU
 		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Release|x86.ActiveCfg = Release|Any CPU
 		{437FDF2B-F4B8-4D9A-A9B4-ECC5C5D98226}.Release|x86.Build.0 = Release|Any CPU
-		{A06BF765-5986-446D-846D-6310CF79B30D}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{A06BF765-5986-446D-846D-6310CF79B30D}.Debug|x86.ActiveCfg = Debug|x86
-		{A06BF765-5986-446D-846D-6310CF79B30D}.Debug|x86.Build.0 = Debug|x86
-		{A06BF765-5986-446D-846D-6310CF79B30D}.Release|Any CPU.ActiveCfg = Release|x86
-		{A06BF765-5986-446D-846D-6310CF79B30D}.Release|x86.ActiveCfg = Release|x86
-		{A06BF765-5986-446D-846D-6310CF79B30D}.Release|x86.Build.0 = Release|x86
+		{F51DB293-B501-42A9-AD8B-1E504995AFCA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{F51DB293-B501-42A9-AD8B-1E504995AFCA}.Debug|x86.ActiveCfg = Debug|x86
+		{F51DB293-B501-42A9-AD8B-1E504995AFCA}.Debug|x86.Build.0 = Debug|x86
+		{F51DB293-B501-42A9-AD8B-1E504995AFCA}.Release|Any CPU.ActiveCfg = Release|x86
+		{F51DB293-B501-42A9-AD8B-1E504995AFCA}.Release|x86.ActiveCfg = Release|x86
+		{F51DB293-B501-42A9-AD8B-1E504995AFCA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

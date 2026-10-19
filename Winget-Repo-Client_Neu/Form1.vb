@@ -63,12 +63,30 @@ Public Class Form1
 
         UseWaitCursor = False
         Cursor.Current = Cursors.Default
+
+        For Each control As Control In Packages.Controls
+            Dim btn As Button = TryCast(control, Button)
+            If btn IsNot Nothing Then
+                Dim paket As Paket = TryCast(btn.Tag, Paket)
+                If paket IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(paket.PACKAGE_LOGO_URL) Then
+                    LoadPackageLogoForButton(btn, paket.PACKAGE_LOGO_URL, SERVER_URL)
+                End If
+            End If
+        Next
+    End Sub
+
+    Private Async Sub LoadPackageLogoForButton(btn As Button, logoUrl As String, serverUrl As String)
+        Dim logo As Image = Await GetPackageLogoAsync(logoUrl, serverUrl)
+        If Not btn.IsDisposed AndAlso Packages.Controls.Contains(btn) Then
+            btn.Image = logo
+        End If
     End Sub
 
     Private Async Sub PaketButton_Click(sender As Object, e As EventArgs)
         Dim btn As Button = DirectCast(sender, Button)
         Dim paketId As String = btn.Tag.PACKAGE_ID
         btn.Text = "Processing..."
+        btn.Enabled = False
 
         Dim versionDialog As New Select_Version(btn.Tag.VERSIONS)
 
@@ -87,5 +105,6 @@ Public Class Form1
             MsgBox("No Versions available!")
         End If
         btn.Text = btn.Tag.PACKAGE_NAME
+        btn.Enabled = True
     End Sub
 End Class
