@@ -10,6 +10,7 @@ Public Class Paket
     Public Property PACKAGE_DESCRIPTION As String
     Public Property PACKAGE_LOGO
     Public Property PACKAGE_LOGO_URL As String
+    Public Property PACKAGE_INSTALLATION_OPTION As String
     Public Property VERSIONS As List(Of String)
 End Class
 

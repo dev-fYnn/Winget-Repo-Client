@@ -31,7 +31,11 @@ Module Start
             For Each p As Paket In packages
                 If p.PACKAGE_ID = "WingetRepoClient.WingetRepoClient" Then Continue For
 
-                Await Winget.RunWingetCommandAsync("Update", p.PACKAGE_ID)
+                If p.PACKAGE_INSTALLATION_OPTION = "INSTALL" Then
+                    Await Winget.RunWingetCommandAsync("Install", p.PACKAGE_ID)
+                Else
+                    Await Winget.RunWingetCommandAsync("Update", p.PACKAGE_ID)
+                End If
             Next
 
             Environment.Exit(0)
