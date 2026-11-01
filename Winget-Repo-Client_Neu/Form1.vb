@@ -96,7 +96,17 @@ Public Class Form1
                 Dim result = Await Winget.RunWingetCommandAsync(versionDialog.install_update, paketId, selectedVersion)
 
                 If result.ExitCode = 0 Then
-                    MsgBox($"Installation Status: {result.ExitCode},{vbNewLine}{vbNewLine}Successfull!")
+                    Dim cfg = Await Winget.ApplyConfigurationAsync(btn.Tag, selectedVersion)
+
+                    Dim msg As String = $"Installation Status: {result.ExitCode},{vbNewLine}{vbNewLine}Successfull!"
+                    If cfg.Applied Then
+                        If cfg.ExitCode = 0 Then
+                            msg &= $"{vbNewLine}{vbNewLine}Configuration applied successfully."
+                        Else
+                            msg &= $"{vbNewLine}{vbNewLine}Configuration failed (Status: {cfg.ExitCode}):{vbNewLine}{cfg.Output}"
+                        End If
+                    End If
+                    MsgBox(msg)
                 Else
                     MsgBox($"Installation Status: {result.ExitCode},{vbNewLine}{vbNewLine}{result.Output}")
                 End If

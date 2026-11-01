@@ -12,6 +12,7 @@ Public Class Paket
     Public Property PACKAGE_LOGO_URL As String
     Public Property PACKAGE_INSTALLATION_OPTION As String
     Public Property VERSIONS As List(Of String)
+    Public Property WINGET_CONFIGS As Dictionary(Of String, String)
 End Class
 
 Public Module Server

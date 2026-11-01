@@ -1,13 +1,11 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
 Imports System.Text
-Imports System.Windows
+Imports System.Net.Http
 
 Public Class Winget
 
     Public Shared Async Function RunWingetCommandAsync(mode As String, package_id As String, Optional package_version As String = "") As Task(Of (ExitCode As Integer, Output As String))
-        Dim outputBuilder As New StringBuilder()
-
         Dim command As String = ""
         Select Case mode
             Case "Install"
@@ -27,10 +25,31 @@ Public Class Winget
             command += $" --header " & """{'Token': '" & AUTH_TOKEN & "'}"""
         End If
 
+        Return Await RunWingetRawAsync(command)
+    End Function
+
+    Public Shared Async Function ApplyConfigurationAsync(p As Paket, version As String) As Task(Of (Applied As Boolean, ExitCode As Integer, Output As String))
+        Dim config_url As String = Nothing
+        If p.WINGET_CONFIGS Is Nothing OrElse Not p.WINGET_CONFIGS.TryGetValue(version, config_url) OrElse String.IsNullOrEmpty(config_url) Then
+            Return (False, 0, "No Config available")
+        End If
+
+        Try
+            Dim r = Await RunWingetRawAsync($"configure -f ""{config_url}"" --accept-configuration-agreements --disable-interactivity")
+            Return (True, r.ExitCode, r.Output)
+        Catch ex As Exception
+            Return (False, -1, "Error applying configuration: " & ex.Message)
+        End Try
+    End Function
+
+
+    Private Shared Async Function RunWingetRawAsync(arguments As String) As Task(Of (ExitCode As Integer, Output As String))
+        Dim outputBuilder As New StringBuilder()
+
         Try
             Dim psi As New ProcessStartInfo()
             psi.FileName = "cmd.exe"
-            psi.Arguments = "/c winget " & command
+            psi.Arguments = "/c winget " & arguments
             psi.UseShellExecute = False
             psi.RedirectStandardOutput = True
             psi.RedirectStandardError = True

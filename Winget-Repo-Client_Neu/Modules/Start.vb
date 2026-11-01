@@ -31,10 +31,11 @@ Module Start
             For Each p As Paket In packages
                 If p.PACKAGE_ID = "WingetRepoClient.WingetRepoClient" Then Continue For
 
-                If p.PACKAGE_INSTALLATION_OPTION = "INSTALL" Then
-                    Await Winget.RunWingetCommandAsync("Install", p.PACKAGE_ID)
-                Else
-                    Await Winget.RunWingetCommandAsync("Update", p.PACKAGE_ID)
+                Dim mode As String = If(p.PACKAGE_INSTALLATION_OPTION = "INSTALL", "Install", "Update")
+                Dim r = Await Winget.RunWingetCommandAsync(mode, p.PACKAGE_ID)
+
+                If r.ExitCode = 0 AndAlso p.VERSIONS IsNot Nothing AndAlso p.VERSIONS.Count > 0 Then
+                    Dim cfg = Await Winget.ApplyConfigurationAsync(p, p.VERSIONS(0))
                 End If
             Next
 
