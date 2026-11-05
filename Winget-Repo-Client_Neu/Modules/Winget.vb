@@ -9,15 +9,15 @@ Public Class Winget
         Dim command As String = ""
         Select Case mode
             Case "Install"
-                command = $"install {package_id}"
+                command = $"install ""{package_id}"""
 
                 If package_version.Length > 0 Then
-                    command += $" --version {package_version}"
+                    command += $" --version ""{package_version}"""
                 End If
             Case "Update"
-                command = $"upgrade {package_id}"
+                command = $"upgrade ""{package_id}"""
             Case "Uninstall"
-                command = $"uninstall {package_id}"
+                command = $"uninstall ""{package_id}"""
         End Select
         command += $" -s {REPO_NAME}"
 
